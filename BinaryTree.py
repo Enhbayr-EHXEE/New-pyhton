@@ -74,14 +74,22 @@ class BinaryTree:
         if self.get_right():
             self.get_right().post_order()
         print(self.get_data(), end=' ')  
+def Binary_Search(array,target):
+    low=0
+    high=len(array)-1
+    while low<=high:
+        mid=(low+high)//2
+        if array[mid]==target:
+            return True
+        elif target<array[mid]:
+            high=mid-1
+        elif target>array[mid]:
+            low=mid+1
+    return False
+
 def main():
-    a=BinaryTree(100)
-    a.insert(101)
-    a.insert(99)
-    a.insert(98)
-    a.insert(97)
-    a.insert(96)
-    a.insert(1)
-    print(a.find_min_value())
+    target=21
+    array=[1,2,3,5,8,10,20]
+    print(Binary_Search(array,target))
 if __name__ == "__main__":
     main()
