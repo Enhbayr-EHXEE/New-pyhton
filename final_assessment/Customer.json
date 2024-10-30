@@ -1,0 +1,9 @@
+[
+    {
+        "type": "Customer",
+        "name": "Eddie",
+        "age": 45,
+        "customer_id": "C001",
+        "email": "eddie@gmail.com"
+    }
+]

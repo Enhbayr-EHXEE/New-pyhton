@@ -1,0 +1,9 @@
+[
+    {
+        "type": "Employee",
+        "name": "Enkhbayar",
+        "age": 20,
+        "employee_id": "E001",
+        "position": "CEO"
+    }
+]

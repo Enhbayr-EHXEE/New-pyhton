@@ -34,16 +34,6 @@ class Person:
     def __str__(self):
         return "The person's name is {} and the age is {}".format(self.__name, self.__age)
 
-
-# Create five Person objects and add them to a list named objects_list
-p1 = Person("Alice", 25)
-p2 = Person("Bob", 30)
-p3 = Person("Charlie", 22)
-p4 = Person("Diana", 28)
-p5 = Person("Eve", 35)
-
-objects_list = [p1, p2, p3, p4, p5]
-
 # Linear search function (to search for target age)
 def linear_search(objects_list, target_age):
     for person in objects_list:
@@ -110,33 +100,19 @@ def print_objects_list(objects_list):
     for person in objects_list:
         print(person)
 
-# Example Usage
+def main():
+    # Create five Person objects and add them to a list named objects_list
+    p1 = Person("Alice", 25)
+    p2 = Person("Bob", 30)
+    p3 = Person("Charlie", 22)
+    p4 = Person("Diana", 28)
+    p5 = Person("Eve", 35)
+    objects_list = [p1, p2, p3, p4, p5]
+    insertion_sort(objects_list)
+    print(binary_search(objects_list,2))
+    print(linear_search(objects_list,23))
+    print(sorted_linear_search(objects_list,30))
+    print_objects_list(objects_list)
 
-# Print the original list
-print("Original list:")
-print_objects_list(objects_list)
-
-# Perform linear search
-print("\nLinear Search for age 30:", linear_search(objects_list, 30))
-
-# Perform sorted linear search (assuming the list is sorted by age)
-objects_list.sort(key=lambda x: x.get_age())  # Sorting by age for sorted linear search and binary search
-print("\nSorted Linear Search for age 28:", sorted_linear_search(objects_list, 28))
-
-# Perform binary search (assuming the list is sorted by age)
-print("\nBinary Search for age 35:", binary_search(objects_list, 35))
-
-# Perform insertion sort by age and print the sorted list
-insertion_sort(objects_list)
-print("\nList sorted by age using Insertion Sort:")
-print_objects_list(objects_list)
-
-# Perform selection sort by age and print the sorted list
-selection_sort(objects_list)
-print("\nList sorted by age using Selection Sort:")
-print_objects_list(objects_list)
-
-# Perform bubble sort by age and print the sorted list
-bubble_sort(objects_list)
-print("\nList sorted by age using Bubble Sort:")
-print_objects_list(objects_list)
+if __name__ == "__main__":
+    main()
