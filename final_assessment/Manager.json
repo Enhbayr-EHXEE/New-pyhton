@@ -1,1 +1,1 @@
-[{"type": "Employee", "name": "Turuu", "age": 23, "employee_id": "E002", "position": "Manager"}]
+[{"type": "Manager", "name": "Turuu", "age": 23, "team_size": 12, "employee_id": "E002", "position": "Manager", "department": "meadowbank"}, {"type": "Manager", "name": "Enkhjin", "age": 16, "team_size": 2, "employee_id": "E004", "position": "manager", "department": "Arncliffe"}]

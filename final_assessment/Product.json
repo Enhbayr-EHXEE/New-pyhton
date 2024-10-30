@@ -1,8 +1,1 @@
-[
-    {
-    "type": "Product",
-    "name": "Fried Rice",
-    "price": 23,
-    "product_id": "P001"
-}
-]
+[{"type": "Product", "product_id": "P001", "name": "Fried Rice", "price": 23}, {"type": "Product", "product_id": "P002", "name": "Tsuiwan", "price": 23.0}]

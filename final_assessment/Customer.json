@@ -1,9 +1,1 @@
-[
-    {
-        "type": "Customer",
-        "name": "Eddie",
-        "age": 45,
-        "customer_id": "C001",
-        "email": "eddie@gmail.com"
-    }
-]
+[{"type": "Customer", "name": "Eddie", "age": 45, "customer_id": "C001", "email": "eddie@gmail.com"}, {"type": "Customer", "name": "Enkhujin", "age": 9, "customer_id": "C002", "email": "ujin.16@gmail.com"}]

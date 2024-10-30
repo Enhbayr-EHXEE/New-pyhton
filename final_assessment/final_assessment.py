@@ -206,7 +206,7 @@ def binary_search(objects_list, target_age):
     high = len(objects_list) - 1
     while low <= high:
         mid = (low + high) // 2
-        mid_age = objects_list[mid].get_age()
+        mid_age = objects_list[mid].get_price()
         if mid_age == target_age:
             return True
         elif mid_age < target_age:
@@ -223,7 +223,7 @@ def bubble_sort(objects_list):
     for i in range(n):
         swapped = False
         for j in range(0, n - i -1):
-            if objects_list[j].get_age() > objects_list[j + 1].get_age():
+            if objects_list[j].get_price() > objects_list[j + 1].get_price():
                 objects_list[j], objects_list[j + 1] = objects_list[j + 1], objects_list[j]
                 swapped = True
         if not swapped:
@@ -259,7 +259,6 @@ def read_file(file_name):
             with open(file_name, 'r') as file:
                 try:
                     datas = json.load(file)
-                    
                     for data in datas:
                         if data["type"] == "Customer":
                             customers_lists.append(Customer(name=data["name"],age=data["age"],customer_id=data["customer_id"],email=data["email"]))
@@ -268,16 +267,15 @@ def read_file(file_name):
                         elif data["type"] == "Product":
                             products_lists.append(Product(name=data["name"],price=data["price"],product_id=data["product_id"]))
                         elif data["type"] == "Manager":
-                            print(data)
                             managers_lists.append(Manager(name=data["name"],age=data["age"],employee_id=data["employee_id"],position=data["position"],department=data["department"],team_size=data["team_size"]))
                 except:
-                    pass
+                    print("ERROR")
 
 def save_file(objects_list,file_name):
     data=[]
     with open(file_name, 'w+') as file:
         for obj in objects_list:
-            if isinstance(obj, Employee):
+            if file_name=="Employee.json":
                 obj_type = "Employee"
                 obj_data = {
                     "type": obj_type,
@@ -286,16 +284,16 @@ def save_file(objects_list,file_name):
                     "employee_id": obj.get_employee_id(),
                     "position": obj.get_position()
                 }
-            elif isinstance(obj, Manager):
+            elif file_name=="Manager.json":
                 obj_type = "Manager"
                 obj_data = {
                     "type": obj_type,
                     "name": obj.get_name(),
                     "age": obj.get_age(),
+                    "team_size": obj.get_team_size(),
                     "employee_id": obj.get_employee_id(),
                     "position": obj.get_position(),
-                    "department": obj.get_department(),
-                    "team_size": obj.get_team_size()
+                    "department": obj.get_department()
                 }
             elif isinstance(obj, Customer):
                 obj_type = "Customer"
@@ -327,17 +325,297 @@ def print_object(objects):
     else:
         for obj in objects:
             print(obj)
+################# Menu Functions ################
+# Menu Functions
+def insert_menu():
+    while True:
+        print("\nInsert Menu:")
+        print("1. Insert Employee")
+        print("2. Insert Manager")
+        print("3. Insert Customer")
+        print("4. Insert Product")
+        print("5. Insert Order")
+        print("6. Back to Main Menu")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            name = input("Enter employee name: ")
+            age = int(input("Enter employee age: "))
+            employee_id = input("Enter employee ID (e.g., E001): ")
+            position = input("Enter position: ")
+            emp = Employee(name, age, employee_id, position)
+            employees_lists.append(emp)
+            print("Employee added successfully.")
+        elif choice == '2':
+            name = input("Enter manager name: ")
+            age = int(input("Enter manager age: "))
+            employee_id = input("Enter manager ID (e.g., E002): ")
+            position = input("Enter position: ")
+            department = input("Enter department: ")
+            team_size = int(input("Enter team size: "))
+            mgr = Manager(name, age, employee_id, position, department, team_size)
+            managers_lists.append(mgr)
+            print("Manager added successfully.")
+        elif choice == '3':
+            name = input("Enter customer name: ")
+            age = int(input("Enter customer age: "))
+            customer_id = input("Enter customer ID (e.g., C001): ")
+            email = input("Enter email: ")
+            cust = Customer(name, age, customer_id, email)
+            customers_lists.append(cust)
+            print("Customer added successfully.")
+        elif choice == '4':
+            product_id = input("Enter product ID (e.g., P001): ")
+            name = input("Enter product name: ")
+            price = float(input("Enter price: "))
+            prod = Product(product_id, name, price)
+            products_lists.append(prod)
+            print("Product added successfully.")
+        elif choice == '5':
+            # For simplicity, an Order can be a string describing the order
+            order_description = input("Enter order description: ")
+            orders.push(order_description)
+            print("Order added to stack successfully.")
+        elif choice == '6':
+            break
+        else:
+            print("Invalid option. Please try again.")
 
+def search_menu():
+    while True:
+        print("\nSearch Menu:")
+        print("1. Search Employee by Age (linear_search)")
+        print("2. Search Manager by Age (linear_search)")
+        print("3. Search Customer by Age (sorted_linear_search)")
+        print("4. Search Product by Price (binary_search)")
+        print("5. Back to Main Menu")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            target_age = int(input("Enter target age: "))
+            result = linear_search(employees_lists, target_age)
+            print(f"Employee with age {target_age} found: {result}")
+        elif choice == '2':
+            target_age = int(input("Enter target age: "))
+            result = linear_search(managers_lists, target_age)
+            print(f"Manager with age {target_age} found: {result}")
+        elif choice == '3':
+            target_age = int(input("Enter target age: "))
+            selection_sort(customers_lists)
+            result = sorted_linear_search(customers_lists, target_age)
+            print(f"Customer with age {target_age} found: {result}")
+        elif choice == '4':
+            target_price = float(input("Enter target price: "))
+            # Implement a search for products_lists with the target price
+            result=binary_search(products_lists,target_price)
+            print(f"Product with price {target_price} found: {result}")
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+def delete_menu():
+    global employees_lists
+    global managers_lists
+    global products_lists
+    global customers_lists
+    while True:
+        print("\nDelete Menu:")
+        print("1. Delete Employee by ID")
+        print("2. Delete Manager by ID")
+        print("3. Delete Customer by ID")
+        print("4. Delete Product by ID")
+        print("5. Delete Order (Pop from Stack)")
+        print("6. Back to Main Menu")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            emp_id = input("Enter employee ID to delete: ")
+            initial_len = len(employees_lists)
+            for i in range(len(employees_lists)):
+                if employees_lists[i].get_employee_id() == emp_id:
+                    employees_lists=employees_lists[:i]+employees_lists[(i+1):]
+                    break
+            if len(employees_lists) < initial_len:
+                print("Employee deleted successfully.")
+            else:
+                print("Employee ID not found.")
+        elif choice == '2':
+            mgr_id = input("Enter manager ID to delete: ")
+            initial_len = len(managers_lists)
+            for i in range(len(managers_lists)):
+                if managers_lists[i].get_employee_id() == mgr_id:
+                    managers_lists=managers_lists[:i]+managers_lists[(i+1):]
+                    break
+            if len(managers_lists) < initial_len:
+                print("Manager deleted successfully.")
+            else:
+                print("Manager ID not found.")
+        elif choice == '3':
+            cust_id = input("Enter customer ID to delete: ")
+            initial_len = len(customers_lists)
+            for i in range(len(customers_lists)):
+                if customers_lists[i].get_customer_id() == cust_id:
+                    customers_lists=customers_lists[:i]+customers_lists[(i+1):]
+                    break
+            if len(customers_lists) < initial_len:
+                print("Customer deleted successfully.")
+            else:
+                print("Customer ID not found.")
+        elif choice == '4':
+            prod_id = input("Enter product ID to delete: ")
+            initial_len = len(products_lists)
+            for i in range(len(products_lists)):
+                if products_lists[i].get_product_id() == prod_id:
+                    products_lists=products_lists[:i]+products_lists[(i+1):]
+                    break
+            if len(products_lists) < initial_len:
+                print("Product deleted successfully.")
+            else:
+                print("Product ID not found.")
+        elif choice == '5':
+            removed_order = orders.pop()
+            if removed_order:
+                print(f"Order '{removed_order}' removed from stack.")
+        elif choice == '6':
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+def sort_menu():
+    while True:
+        print("\nSort Menu:")
+        print("1. Sort Employees by Age (Insertion Sort)")
+        print("2. Sort Managers by Age (Insertion Sort)")
+        print("3. Sort Customers by Age (Selection Sort)")
+        print("4. Sort Products by Price (Bubble Sort)")
+        print("5. Back to Main Menu")
+        choice = input("Select an option: ")
+
+        if choice == '1':
+            # Sort employees by age using Bubble Sort
+            insertion_sort(employees_lists)
+            print("Employees sorted by age (Insertion Sort):")
+            print_object(employees_lists)
+
+        elif choice == '2':
+            # Sort managers by age using Insertion Sort
+            insertion_sort(managers_lists)
+            print("Managers sorted by age (Insertion Sort):")
+            print_object(managers_lists)
+
+        elif choice == '3':
+            # Sort customers by age using Selection Sort
+            selection_sort(customers_lists)
+            print("Customers sorted by age (Selection Sort):")
+            print_object(customers_lists)
+
+        elif choice == '4':
+            # Sort products by price using Bubble Sort
+            bubble_sort(products_lists)
+            print("Products sorted by price (Bubble Sort):")
+            print_object(products_lists)
+
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+
+def display_menu():
+    while True:
+        print("\nDisplay Menu:")
+        print("1. Display All Employees")
+        print("2. Display All Managers")
+        print("3. Display All Customers")
+        print("4. Display All Products")
+        print("5. Display All Orders")
+        print("6. Back to Main Menu")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            print("\nEmployees:")
+            print_object(employees_lists)
+        elif choice == '2':
+            print("\nManagers:")
+            print_object(managers_lists)
+        elif choice == '3':
+            print("\nCustomers:")
+            print_object(customers_lists)
+        elif choice == '4':
+            print("\nProducts:")
+            print_object(products_lists)
+        elif choice == '5':
+            print("\nOrders Stack:")
+            print(orders)
+        elif choice == '6':
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+def save_menu():
+    while True:
+        print("\nSave Menu:")
+        print("1. Save Employees to File")
+        print("2. Save Managers to File")
+        print("3. Save Customers to File")
+        print("4. Save Products to File")
+        print("5. Back to Main Menu")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            save_file(employees_lists,"Employee.json")
+            print("Employees saved to file successfully.")
+        elif choice == '2':
+            save_file(managers_lists,"Manager.json")
+            print("Managers saved to file successfully.")
+        elif choice == '3':
+            save_file(customers_lists,"Customer.json")
+            print("Customers saved to file successfully.")
+        elif choice == '4':
+            save_file(products_lists,"Product.json")
+            print("Products saved to file successfully.")
+        elif choice == '5':
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+def main_menu():
+    while True:
+        print("\n--- Restaurant Management System ---")
+        print("1. Insert Records")
+        print("2. Search Records")
+        print("3. Delete Records")
+        print("4. Display Records")
+        print("5. Save Records to File")
+        print("6. Sort Records")
+        print("7. Exit")
+        choice = input("Select an option: ")
+        
+        if choice == '1':
+            insert_menu()
+        elif choice == '2':
+            search_menu()
+        elif choice == '3':
+            delete_menu()
+        elif choice == '4':
+            display_menu()
+        elif choice == '5':
+            save_menu()
+        elif choice == '6':
+            sort_menu()
+        elif choice == '7':
+            print("Exiting the system. Goodbye!")
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+############ main function ##########################
 if __name__ == "__main__":
-    # read_file("Manager.json")
-    # read_file("Product.json")
-    # read_file("Customer.json")
-    # read_file("Employee.json")
-    # print_object(managers_lists)
-    # print_object(employees_lists)
-    # print_object(customers_lists)
-    # print_object(products_lists)
-    m1=Manager(name="Turuu",age=23,employee_id="E002",position="Manager",department="meadowbank",team_size=12)
-    managers_lists.append(m1)
-    save_file(managers_lists,"Manager.json")
+    read_file("Manager.json")
+    read_file("Product.json")
+    read_file("Customer.json")
+    read_file("Employee.json")
+    orders=Stack()
+    main_menu()
     
